@@ -6,20 +6,33 @@ import (
 	"os"
 
 	"github.com/natesales/pathvector/pkg/config"
-	"github.com/natesales/pathvector/plugins"
+	"github.com/natesales/pathvector/pkg/plugin"
 	"github.com/projectcalico/api/pkg/client/clientset_generated/clientset"
+	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
+var version = "0.0.1"
+
 type Plugin struct{}
+
+var _ plugin.Plugin = (*Plugin)(nil)
 
 func (Plugin) Description() string {
 	return "Calico BGP neighbor integration"
 }
 
-func (Plugin) Execute(c *config.Config) error {
+func (*Plugin) Version() string {
+	return version
+}
+
+func (*Plugin) Command() *cobra.Command {
+	return nil
+}
+
+func (Plugin) Modify(c *config.Config) error {
 	kubeconfig, err := clientcmd.BuildConfigFromFlags("", os.Getenv("KUBECONFIG"))
 	if err != nil {
 		return err
@@ -64,5 +77,5 @@ func (Plugin) Execute(c *config.Config) error {
 }
 
 func init() {
-	plugins.Register("calico", Plugin{})
+	plugin.Register("calico", &Plugin{})
 }

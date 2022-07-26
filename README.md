@@ -1,6 +1,6 @@
-# Pathvector Calico Plugin for version 5
+# Pathvector Calico Plugin
 
-The `calico` plugin adds support for Calico BGP autoconfiguration to Pathvector version 5.
+The `calico` plugin adds support for Calico BGP autoconfiguration to Pathvector version 6.
 
 ## Quickstart
 
